@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lokshiv Gupta — Fueled by Caffeine &amp; Code</title>
+<meta name="description" content="Lokshiv Gupta — full-stack developer. Portfolio brewed with caffeine and code.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:        #FDFBF7;
+    --cream-alt:     #F5F0EB;
+    --espresso:      #2B1E1A;
+    --espresso-soft: #4A362E;
+    --latte:         #D9C5B2;
+    --latte-soft:    #EDE1D3;
+    --caramel:       #C88A58;
+    --caramel-deep:  #A96B3C;
+    --matcha:        #7C8B6F;
+    --matcha-deep:   #5F6C55;
+    --cream-rgb: 253,251,247;
+    --shadow-soft: 0 8px 30px rgba(43,30,26,0.08);
+    --shadow-hard: 6px 6px 0 var(--espresso);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 10px;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; scroll-padding-top: 84px; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3,.display{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .mono{ font-family: 'Space Mono', monospace; }
+
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+
+  ::selection{ background: var(--caramel); color: var(--cream); }
+
+  :focus-visible{
+    outline: 3px solid var(--matcha);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .container{
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- grain / texture overlay ---------- */
+  .grain{
+    position: fixed; inset: 0; pointer-events: none; z-index: 2;
+    opacity: 0.035; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- scroll progress "fill" cup in nav ---------- */
+  .navbar{
+    position: fixed; top:0; left:0; right:0; z-index: 50;
+    background: rgba(253,251,247,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(43,30,26,0.08);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 14px 24px;
+    max-width: 1180px; margin: 0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces',serif; font-weight:700; font-size:1.15rem;
+    text-decoration:none; color:var(--espresso);
+  }
+  .cup-progress{
+    width: 26px; height: 30px; position: relative; flex-shrink:0;
+  }
+  .cup-progress svg{ width:100%; height:100%; display:block; }
+  .cup-fill{ transition: height .15s linear; }
+
+  .nav-links{ display:flex; gap: 28px; list-style:none; margin:0; padding:0; }
+  .nav-links a{
+    text-decoration:none; font-weight:600; font-size:0.92rem;
+    position:relative; padding: 4px 0; color: var(--espresso-soft);
+    transition: color .2s var(--ease);
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-2px; height:2px; width:0%;
+    background: var(--caramel); transition: width .25s var(--ease);
+  }
+  .nav-links a:hover{ color: var(--espresso); }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .nav-toggle span{ display:block; width:22px; height:2px; background:var(--espresso); margin:5px 0; transition: transform .25s var(--ease), opacity .25s; }
+
+  @media (max-width: 780px){
+    .nav-links{
+      position:fixed; top:60px; right:24px; left:24px;
+      flex-direction:column; gap:0;
+      background: var(--cream); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft); border:1px solid rgba(43,30,26,0.08);
+      max-height:0; overflow:hidden; opacity:0;
+      transition: max-height .3s var(--ease), opacity .25s var(--ease);
+    }
+    .nav-links.open{ max-height:320px; opacity:1; padding: 8px 0; }
+    .nav-links li{ width:100%; }
+    .nav-links a{ display:block; padding: 12px 20px; }
+    .nav-links a::after{ display:none; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height: 100svh;
+    display:flex; align-items:center;
+    padding: 130px 0 80px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; top:-10%; right:-8%; width:520px; height:520px;
+    background: radial-gradient(circle at 30% 30%, var(--latte-soft), transparent 70%);
+    border-radius:50%; z-index:0;
+  }
+  .hero-grid{
+    position:relative; z-index:1;
+    display:grid; grid-template-columns: 1.15fr 0.85fr; gap: 60px; align-items:center;
+  }
+  @media (max-width: 900px){
+    .hero-grid{ grid-template-columns: 1fr; gap:48px; text-align:left; }
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Space Mono',monospace; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    background: var(--espresso); color: var(--cream);
+    padding: 7px 14px; border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:#8FBF7A; animation: pulse 1.8s infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.4; transform:scale(0.75);} }
+
+  .hero h1{
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    line-height: 0.98;
+    color: var(--espresso);
+  }
+  .hero h1 .accent{
+    color: var(--caramel-deep);
+    font-style: italic;
+    font-weight: 600;
+  }
+  .hero p.lede{
+    margin-top: 22px; max-width: 480px;
+    font-size: 1.12rem; line-height:1.6; color: var(--espresso-soft);
+  }
+
+  .cta-row{ display:flex; gap:14px; margin-top: 34px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem;
+    padding: 15px 26px; border-radius: 999px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer; border:2px solid transparent;
+    transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-primary{ background: var(--espresso); color: var(--cream); }
+  .btn-primary:hover{ transform: translateY(-3px); box-shadow: var(--shadow-hard); }
+  .btn-outline{ background: transparent; color: var(--espresso); border-color: var(--espresso); }
+  .btn-outline:hover{ background: var(--espresso); color: var(--cream); transform: translateY(-3px); }
+
+  /* mood badge / brew selector */
+  .brew-card{
+    position:relative;
+    background: var(--cream-alt);
+    border: 1.5px solid rgba(43,30,26,0.1);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    box-shadow: var(--shadow-soft);
+  }
+  .brew-card .label{
+    font-family:'Space Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em;
+    color: var(--espresso-soft); margin-bottom: 14px; display:block;
+  }
+  .brew-status{
+    display:flex; align-items:center; gap:16px;
+    background: var(--cream);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    border: 1px solid rgba(43,30,26,0.08);
+  }
+  .brew-icon{
+    font-size: 2.2rem; line-height:1;
+    filter: drop-shadow(0 4px 6px rgba(43,30,26,0.12));
+    transition: transform .3s var(--ease);
+  }
+  .brew-status.swap .brew-icon{ transform: scale(0.6) rotate(-15deg); opacity:0; }
+  .brew-text strong{ display:block; font-size:1.05rem; font-family:'Fraunces',serif; }
+  .brew-text span{ font-size: 0.85rem; color: var(--espresso-soft); }
+
+  .brew-options{ display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+  .brew-opt{
+    border: 1.5px solid rgba(43,30,26,0.15); background: var(--cream);
+    border-radius: 999px; padding: 7px 13px; font-size:0.78rem; font-weight:600;
+    cursor:pointer; transition: all .2s var(--ease);
+  }
+  .brew-opt:hover{ border-color: var(--caramel); transform: translateY(-2px); }
+  .brew-opt.active{ background: var(--caramel); color: var(--cream); border-color: var(--caramel); }
+
+  .steam{ position:absolute; top:-6px; right:34px; width:34px; height:50px; pointer-events:none; opacity:0.55; }
+  .steam span{
+    position:absolute; bottom:0; width:3px; height:16px; border-radius:3px;
+    background: linear-gradient(to top, rgba(43,30,26,0), rgba(43,30,26,.35));
+    animation: rise 3s ease-in infinite;
+  }
+  .steam span:nth-child(1){ left:4px; animation-delay:0s; }
+  .steam span:nth-child(2){ left:14px; animation-delay:1s; }
+  .steam span:nth-child(3){ left:24px; animation-delay:2s; }
+  @keyframes rise{
+    0%{ transform: translateY(0) scaleY(1); opacity:0; }
+    20%{ opacity:.7; }
+    100%{ transform: translateY(-38px) scaleY(1.6); opacity:0; }
+  }
+
+  /* section shells */
+  section{ padding: 110px 0; position:relative; scroll-margin-top: 84px; }
+  #top{ scroll-margin-top: 0; }
+  .section-head{ margin-bottom: 52px; max-width: 640px; }
+  .section-head .kicker{
+    font-family:'Space Mono',monospace; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.12em;
+    color: var(--caramel-deep); display:block; margin-bottom:10px;
+  }
+  .section-head h2{ font-size: clamp(2rem, 4vw, 2.8rem); }
+  .section-head p{ margin-top:14px; color: var(--espresso-soft); font-size:1.05rem; line-height:1.6; }
+
+  .reveal{ opacity:0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .reveal.in-view{ opacity:1; transform: translateY(0); }
+
+  /* ---------- ABOUT ---------- */
+  .about{ background: var(--cream-alt); }
+  .about-grid{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items:start; }
+  @media (max-width: 900px){ .about-grid{ grid-template-columns:1fr; } }
+
+  .roast-card{
+    background: var(--cream);
+    border-radius: var(--radius-lg);
+    border: 1.5px solid rgba(43,30,26,0.1);
+    box-shadow: var(--shadow-soft);
+    overflow:hidden;
+  }
+  .roast-header{
+    background: var(--espresso); color: var(--cream);
+    padding: 22px 26px;
+    display:flex; justify-content:space-between; align-items:flex-start;
+  }
+  .roast-header .roast-name{ font-family:'Fraunces',serif; font-size:1.4rem; font-weight:700; }
+  .roast-header .roast-sub{ font-family:'Space Mono',monospace; font-size:0.72rem; opacity:0.65; margin-top:4px; }
+  .roast-badge{
+    background: var(--caramel); color: var(--espresso);
+    font-family:'Space Mono',monospace; font-size:0.68rem; font-weight:700;
+    padding: 5px 10px; border-radius:6px; white-space:nowrap;
+  }
+  .roast-body{ padding: 26px; }
+  .roast-row{ display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom: 1px dashed rgba(43,30,26,0.15); font-size:0.92rem; }
+  .roast-row:last-child{ border-bottom:none; }
+  .roast-row .k{ color: var(--espresso-soft); }
+  .roast-row .v{ font-weight:700; font-family:'Space Mono',monospace; }
+  .roast-bar{ width:110px; height:6px; background: var(--latte-soft); border-radius:4px; overflow:hidden; }
+  .roast-bar i{ display:block; height:100%; background: var(--caramel); border-radius:4px; }
+
+  .about-copy p{ font-size:1.08rem; line-height:1.75; color: var(--espresso-soft); margin: 0 0 18px; }
+  .about-copy strong{ color: var(--espresso); }
+
+  .pill-group{ margin-top: 28px; }
+  .pill-group h3{ font-size:0.95rem; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px; color: var(--espresso); }
+  .pills{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom: 26px; }
+  .pill{
+    font-size:0.85rem; font-weight:600; padding: 8px 15px; border-radius:999px;
+    background: var(--cream); border:1.5px solid rgba(43,30,26,0.14);
+    cursor:default; transition: all .2s var(--ease);
+  }
+  .pill:hover{ background: var(--matcha); color: var(--cream); border-color: var(--matcha); transform: translateY(-2px) rotate(-1deg); }
+
+  /* ---------- PROJECTS "MENU" ---------- */
+  .menu-board-tag{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:0.72rem;
+    background: var(--espresso); color: var(--cream); padding: 4px 10px; border-radius: 6px 6px 0 0;
+  }
+
+  .card-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+
+  .proj-card{
+    position:relative;
+    background: var(--cream);
+    border: 1.5px solid rgba(43,30,26,0.1);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .proj-card:hover{
+    box-shadow: 0 22px 40px rgba(43,30,26,0.14);
+    border-color: var(--caramel);
+  }
+  .proj-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+  .proj-num{ font-family:'Space Mono',monospace; font-size:0.72rem; color: var(--caramel-deep); }
+  .proj-price{
+    font-family:'Space Mono',monospace; font-size:0.72rem; background: var(--latte-soft);
+    padding: 4px 9px; border-radius:6px; color: var(--espresso-soft);
+  }
+  .proj-card h3{ font-size:1.35rem; margin-bottom:8px; }
+  .proj-card p.desc{ color: var(--espresso-soft); font-size:0.95rem; line-height:1.6; margin: 0 0 18px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom: 20px; }
+  .tag{
+    font-size:0.72rem; font-weight:700; padding: 5px 10px; border-radius:999px;
+    background: var(--latte-soft); color: var(--espresso-soft);
+  }
+  .proj-links{ display:flex; gap:12px; }
+  .proj-links a{
+    font-size:0.85rem; font-weight:700; text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px;
+    padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color .2s var(--ease), color .2s var(--ease);
+  }
+  .proj-links a:hover{ border-color: var(--caramel); color: var(--caramel-deep); }
+
+  /* ---------- CONTACT "RECEIPT" ---------- */
+  .contact{ background: var(--espresso); color: var(--cream); }
+  .contact .section-head .kicker{ color: var(--latte); }
+  .contact .section-head h2{ color: var(--cream); }
+  .contact .section-head p{ color: rgba(253,251,247,0.72); }
+
+  .receipt-wrap{ display:flex; justify-content:center; }
+  .receipt{
+    background: var(--cream);
+    color: var(--espresso);
+    width: 100%; max-width: 460px;
+    border-radius: 6px;
+    padding: 34px 30px 26px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    font-family:'Space Mono',monospace;
+  }
+  .receipt::before, .receipt::after{
+    content:''; position:absolute; left:0; right:0; height:14px;
+    background:
+      radial-gradient(circle at 8px 0, transparent 7px, var(--espresso) 7.5px) repeat-x;
+    background-size: 16px 14px;
+  }
+  .receipt::before{ top:-7px; transform: rotate(180deg); }
+  .receipt::after{ bottom:-7px; }
+
+  .receipt-head{ text-align:center; margin-bottom: 18px; }
+  .receipt-head .cup-emoji{ font-size:1.8rem; }
+  .receipt-head h3{ font-family:'Fraunces',serif; font-size:1.3rem; margin: 8px 0 2px; }
+  .receipt-head .sub{ font-size:0.7rem; opacity:0.6; letter-spacing:0.05em; }
+
+  .receipt-divider{ border: none; border-top: 1.5px dashed rgba(43,30,26,0.3); margin: 16px 0; }
+
+  .field{ margin-bottom: 16px; }
+  .field label{
+    display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em;
+    color: var(--espresso-soft); margin-bottom:6px;
+  }
+  .field input, .field textarea{
+    width:100%; border: 1.5px solid rgba(43,30,26,0.18); background: transparent;
+    font-family:'Space Mono',monospace; font-size:0.92rem; color: var(--espresso);
+    padding: 10px 12px; border-radius: 6px; resize: vertical;
+    transition: border-color .2s var(--ease), background .2s var(--ease);
+  }
+  .field input:focus, .field textarea:focus{ border-color: var(--caramel); background: rgba(200,138,88,0.06); outline:none; }
+  .field textarea{ min-height: 96px; }
+
+  .receipt-total{ display:flex; justify-content:space-between; font-size:0.82rem; padding: 4px 0; }
+  .receipt-total.grand{ font-weight:700; font-size:0.95rem; border-top: 1.5px dashed rgba(43,30,26,0.3); margin-top:8px; padding-top:12px; }
+
+  .order-btn{
+    width:100%; margin-top: 18px; padding: 15px; border-radius: 8px; border:none;
+    background: var(--espresso); color: var(--cream); font-family:'Plus Jakarta Sans',sans-serif;
+    font-weight:800; font-size:0.95rem; cursor:pointer; letter-spacing:0.02em;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    transition: transform .15s var(--ease), background .2s var(--ease);
+  }
+  .order-btn:hover{ background: var(--caramel-deep); }
+  .order-btn:active{ transform: scale(0.97); }
+  .order-btn.sent{ background: var(--matcha-deep); }
+
+  .receipt-barcode{ margin-top:18px; height: 34px;
+    background: repeating-linear-gradient(90deg, var(--espresso) 0 2px, transparent 2px 5px);
+    opacity: 0.85;
+  }
+  .receipt-foot{ text-align:center; font-size:0.68rem; opacity:0.55; margin-top:10px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background: var(--espresso-soft);
+    color: var(--cream);
+    padding: 56px 0 28px;
+  }
+  .footer-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:26px; margin-bottom: 34px; }
+  .footer-brand h3{ font-family:'Fraunces',serif; font-size:1.5rem; }
+  .footer-brand p{ margin: 6px 0 0; font-size:0.85rem; color: rgba(253,251,247,0.65); }
+
+  .clock-chip{
+    display:inline-flex; align-items:center; gap:10px;
+    background: rgba(253,251,247,0.08); border: 1px solid rgba(253,251,247,0.18);
+    padding: 10px 16px; border-radius: 999px; font-family:'Space Mono',monospace; font-size:0.85rem;
+  }
+  .clock-chip .dot{ width:7px; height:7px; border-radius:50%; background:#8FBF7A; }
+
+  .social-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .social-link{
+    width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background: rgba(253,251,247,0.08); border:1px solid rgba(253,251,247,0.18);
+    text-decoration:none; color: var(--cream); transition: all .25s var(--ease);
+  }
+  .social-link:hover{ background: var(--caramel); border-color: var(--caramel); transform: translateY(-4px) rotate(-6deg); }
+  .social-link svg{ width:19px; height:19px; }
+
+  .footer-bottom{
+    border-top: 1px solid rgba(253,251,247,0.12); padding-top: 22px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:0.78rem; color: rgba(253,251,247,0.55);
+  }
+
+  /* utility */
+  .to-top{
+    position: fixed; bottom: 24px; right: 24px; z-index: 40;
+    width: 48px; height:48px; border-radius:50%;
+    background: var(--espresso); color: var(--cream); border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    box-shadow: var(--shadow-soft);
+    opacity:0; pointer-events:none; transform: translateY(10px);
+    transition: opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .to-top.show{ opacity:1; pointer-events:auto; transform: translateY(0); }
+  .to-top:hover{ background: var(--caramel-deep); }
+
+  @media (max-width: 600px){
+    section{ padding: 80px 0; }
+    .hero{ padding-top: 110px; }
+    .footer-grid{ flex-direction:column; align-items:flex-start; }
+  }
+
+  /* ---------- bean cursor trail ---------- */
+  #beanCanvas{
+    position: fixed; inset:0; z-index: 999; pointer-events:none;
+  }
+
+  /* ---------- cups-fueled counter widget ---------- */
+  .fuel-widget{
+    margin-top: 18px; display:flex; align-items:center; justify-content:space-between;
+    gap: 12px; background: var(--cream); border: 1px solid rgba(43,30,26,0.1);
+    border-radius: var(--radius-md); padding: 12px 14px;
+  }
+  .fuel-copy{ font-size:0.78rem; color: var(--espresso-soft); line-height:1.3; }
+  .fuel-copy strong{ display:block; font-family:'Fraunces',serif; font-size:1.15rem; color:var(--espresso); }
+  .fuel-btn{
+    flex-shrink:0; width:42px; height:42px; border-radius:50%; border:none; cursor:pointer;
+    background: var(--caramel); color:var(--cream); font-size:1.15rem; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    transition: transform .18s var(--ease), background .2s var(--ease);
+  }
+  .fuel-btn:hover{ background: var(--caramel-deep); }
+  .fuel-btn:active{ transform: scale(0.88) rotate(-8deg); }
+  .fuel-puff{
+    position:absolute; font-size:0.9rem; pointer-events:none;
+    animation: puffUp .9s var(--ease) forwards;
+  }
+  @keyframes puffUp{
+    0%{ opacity:0.9; transform: translateY(0) scale(0.6); }
+    100%{ opacity:0; transform: translateY(-46px) scale(1.3); }
+  }
+
+  /* ---------- toast / secret menu ---------- */
+  .toast{
+    position: fixed; left:50%; bottom: 28px; z-index: 200;
+    transform: translate(-50%, 20px); opacity:0; pointer-events:none;
+    background: var(--espresso); color: var(--cream);
+    padding: 14px 22px; border-radius: 999px; box-shadow: var(--shadow-soft);
+    font-family:'Space Mono',monospace; font-size:0.82rem;
+    display:flex; align-items:center; gap:10px; white-space:nowrap;
+    transition: transform .35s var(--ease), opacity .35s var(--ease);
+  }
+  .toast.show{ transform: translate(-50%, 0); opacity:1; }
+
+  .secret-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    max-width:0; opacity:0; overflow:hidden; white-space:nowrap;
+    padding: 0; border-radius:999px; font-size:0.85rem; font-weight:600;
+    background: var(--matcha); color: var(--cream);
+    transition: max-width .5s var(--ease), opacity .4s var(--ease), padding .5s var(--ease);
+  }
+  .secret-pill.unlocked{ max-width: 260px; opacity:1; padding: 8px 15px; }
+
+  /* ---------- magnetic buttons ---------- */
+  .btn{ will-change: transform; }
+
+  /* ---------- typewriter ---------- */
+  .typewriter{ border-right: 2px solid var(--caramel); }
+  .typewriter.done{ border-right: none; }
+
+  /* ---------- flip project cards ---------- */
+  .proj-card{ perspective: 1200px; }
+  .card-inner{
+    position:relative; width:100%; transition: transform .6s var(--ease); transform-style: preserve-3d;
+  }
+  .proj-card.flipped .card-inner{ transform: rotateY(180deg); }
+  .card-face{ backface-visibility:hidden; }
+  .card-front{ position:relative; }
+  .card-back{
+    position:absolute; inset:0; transform: rotateY(180deg);
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 26px; background: var(--espresso); color: var(--cream);
+    border-radius: calc(var(--radius-lg) - 1.5px);
+  }
+  .card-back h4{ font-family:'Fraunces',serif; font-size:1.1rem; margin-bottom:10px; }
+  .card-back p{ font-size:0.9rem; line-height:1.6; color: rgba(253,251,247,0.8); }
+  .flip-btn{
+    position:absolute; top:22px; right:22px; z-index:2;
+    width:32px; height:32px; border-radius:50%; border:1.5px solid rgba(43,30,26,0.15);
+    background: var(--cream); cursor:pointer; font-size:0.9rem;
+    display:flex; align-items:center; justify-content:center;
+    transition: transform .3s var(--ease), border-color .2s var(--ease);
+  }
+  .flip-btn:hover{ border-color: var(--caramel); transform: rotate(25deg); }
+  .proj-card.flipped .flip-btn{ transform: rotate(180deg); }
+
+  /* ---------- confetti beans ---------- */
+  .bean-confetti{
+    position: fixed; top:0; left:0; font-size:1.1rem; z-index:300; pointer-events:none;
+    animation: beanFall linear forwards;
+  }
+  @keyframes beanFall{
+    0%{ transform: translateY(-20px) rotate(0deg); opacity:1; }
+    100%{ transform: translateY(100vh) rotate(540deg); opacity:0.2; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="cup-progress" aria-hidden="true">
+        <svg viewBox="0 0 24 28">
+          <defs>
+            <clipPath id="cupClip"><path d="M2 4 h20 l-2.4 20 a2 2 0 0 1 -2 1.8 h-11.2 a2 2 0 0 1 -2 -1.8 z"/></clipPath>
+          </defs>
+          <path d="M2 4 h20 l-2.4 20 a2 2 0 0 1 -2 1.8 h-11.2 a2 2 0 0 1 -2 -1.8 z" fill="none" stroke="#2B1E1A" stroke-width="1.6"/>
+          <path d="M21 7 h2 a2.4 2.4 0 0 1 0 8 h-1.6" fill="none" stroke="#2B1E1A" stroke-width="1.6"/>
+          <g clip-path="url(#cupClip)">
+            <rect class="cup-fill" id="cupFill" x="0" y="28" width="24" height="0" fill="#C88A58"/>
+          </g>
+        </svg>
+      </span>
+      Lokshiv Gupta
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#order">Order</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Now brewing new features</span>
+        <h1>Fueled by<br>Caffeine <span class="accent">&amp;</span><br>Code.</h1>
+        <p class="lede">I'm Lokshiv — a full-stack developer who ships clean interfaces on a strict diet of oat lattes and late-night pull requests. Welcome to the shop.</p>
+        <div class="cta-row">
+          <a href="#menu" class="btn btn-primary">☕ Check Projects</a>
+          <a href="#order" class="btn btn-outline">Let's Chat</a>
+        </div>
+      </div>
+
+      <div class="brew-card reveal" id="brewCard">
+        <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span class="label">Current brew status</span>
+        <div class="brew-status" id="brewStatus">
+          <div class="brew-icon" id="brewIcon">⚡</div>
+          <div class="brew-text">
+            <strong id="brewTitle">Espresso Mode</strong>
+            <span id="brewDesc">Shipping fast, no decaf allowed.</span>
+          </div>
+        </div>
+        <div class="brew-options" id="brewOptions">
+          <button class="brew-opt active" data-mood="espresso">⚡ Espresso</button>
+          <button class="brew-opt" data-mood="latte">🌿 Latte Focus</button>
+          <button class="brew-opt" data-mood="coldbrew">🧊 Cold Brew Chill</button>
+          <button class="brew-opt" data-mood="decaf">😴 Decaf Rest</button>
+        </div>
+
+        <div class="fuel-widget">
+          <div class="fuel-copy">Cups fueling this site today<strong id="fuelCount">0</strong></div>
+          <button class="fuel-btn" id="fuelBtn" aria-label="Add a cup">+</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <!-- <span class="kicker">// About Me</span> -->
+        <h2>The Roast Profile</h2>
+        <p>Every developer has a blend. Here's mine — origin, notes, and the stack that keeps it brewing.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="roast-card reveal">
+          <div class="roast-header">
+            <div>
+              <div class="roast-name">Lokshiv Gupta Blend</div>
+              <div class="roast-sub">ORIGIN: SELF-TAUGHT → CS GRAD</div>
+            </div>
+            <span class="roast-badge">SINGLE ORIGIN</span>
+          </div>
+          <div class="roast-body">
+            <div class="roast-row"><span class="k">Roast Level</span><span class="v">Full-Stack</span></div>
+            <div class="roast-row"><span class="k">Intensity</span>
+              <span class="roast-bar"><i style="width:88%"></i></span>
+            </div>
+            <div class="roast-row"><span class="k">Notes</span><span class="v">Clean UI, Fast APIs</span></div>
+            <div class="roast-row"><span class="k">Best Served</span><span class="v">With Deadlines</span></div>
+            <div class="roast-row"><span class="k">Years Brewing</span><span class="v">4+</span></div>
+          </div>
+        </div>
+
+        <div class="about-copy">
+          <p class="typewriter" id="typewriterText" data-full="Hey, I'm Lokshiv — I build web products the way I build a good cup of coffee: with care about the details nobody sees but everybody feels. By day I write React and Node; by night I'm probably arguing with a French press."></p>
+          <p>I got into code the same way I got into coffee — one bad first attempt, a lot of curiosity, and an embarrassing number of tabs open at once. These days I care most about interfaces that feel <em>fast</em>, <em>warm</em>, and a little bit fun.</p>
+
+          <div class="pill-group">
+            <h3>Tech Stack</h3>
+            <div class="pills">
+              <span class="pill">JavaScript</span>
+              <span class="pill">React</span>
+              <span class="pill">Node.js</span>
+              <span class="pill">TypeScript</span>
+              <span class="pill">C++</span>
+              <span class="pill">Tailwind</span>
+              <span class="pill">PostgreSQL</span>
+            </div>
+          </div>
+
+          <div class="pill-group">
+            <h3>Off The Clock</h3>
+            <div class="pills">
+              <span class="pill">☕ Home brewing</span>
+              <span class="pill">🎧 Lo-fi playlists</span>
+              <span class="pill">🎮 Indie games</span>
+              <span class="pill">📷 Film photography</span>
+              <span class="pill">🥐 Pastry experiments</span>
+              <span class="secret-pill" id="secretPill">✨ Latte art (still learning)</span>
+            </div>
+          </div>
+
+          <div class="pill-group">
+            <h3>Favorite Brews</h3>
+            <div class="pills">
+              <span class="pill">Oat Milk Cortado</span>
+              <span class="pill">Pour-Over Ethiopia</span>
+              <span class="pill">Iced Vietnamese</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="menu">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="menu-board-tag">The Menu</span>
+        <h2>Featured Builds</h2>
+        <p>A few things I've shipped, brewed to order. Hover a card — it tilts like a cup on a wobbly table.</p>
+      </div>
+
+      <div class="card-grid" id="cardGrid">
+        <article class="proj-card reveal">
+          <button class="flip-btn" aria-label="Flip card for behind-the-scenes note">↻</button>
+          <div class="card-inner">
+            <div class="card-face card-front">
+              <div class="proj-top"><span class="proj-num">No. 01</span><span class="proj-price">$0.00</span></div>
+              <h3>To-do Web App</h3>
+              <p class="desc">A simple full-stack to-do web app for creating, organizing, and tracking everyday tasks with a clean, responsive interface</p>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span><span class="tag">PostgreSQL</span><span class="tag">Node js</span>
+              </div>
+              <div class="proj-links">
+                <a href="https://todo-web-app-0v8a.onrender.com/" target="_blank" rel="noopener">Live Demo →</a>
+                <a href="https://github.com/lokshivgupta/Todo-Web-App" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h4>Behind the scenes</h4>
+              <p>
+                Started as a simple to-do list for keeping life organized. Built it like a good cup of coffee — simple ingredients, a clean process, and a little tweaking until everything came together just right.
+                </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj-card reveal">
+          <button class="flip-btn" aria-label="Flip card for behind-the-scenes note">↻</button>
+          <div class="card-inner">
+            <div class="card-face card-front">
+              <div class="proj-top"><span class="proj-num">No. 02</span><span class="proj-price">$0.00</span></div>
+              <h3>GitHub User Finder</h3>
+              <p class="desc">A simple user search app that lets you quickly find and view profile information through a clean, lightweight interface.
+                .</p>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span><span class="tag">REST API</span><span class="tag">Postgres</span>
+              </div>
+              <div class="proj-links">
+                <a href="https://lokshivgupta.github.io/FindUser/" target="_blank" rel="noopener">Live Demo →</a>
+                <a href="https://github.com/lokshivgupta/FindUser" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h4>Behind the scenes</h4>
+              <p>Built as a small experiment in working with user data — like dialing in a coffee recipe, the goal was to keep the process simple, fast, and easy to use..</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj-card reveal">
+          <button class="flip-btn" aria-label="Flip card for behind-the-scenes note">↻</button>
+          <div class="card-inner">
+            <div class="card-face card-front">
+              <div class="proj-top"><span class="proj-num">No. 03</span><span class="proj-price">$0.00</span></div>
+              <h3>Task Scheduler</h3>
+              <p class="desc">A C++ task scheduler for organizing and managing tasks, built around custom classes, iterators, and task-list data structures.</p>
+              <div class="tag-row">
+                <span class="tag">C++</span><span class="tag">Data Structures</span><span class="tag">OOPs</span>
+              </div>
+              <div class="proj-links">
+                <a href="#" target="_blank" rel="noopener">Live Demo →</a>
+                <a href="https://github.com/lokshivgupta/Task-Scheduler" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h4>Behind the scenes</h4>
+              <p>Built like making a good cup of coffee — start with the basics, organize everything carefully, and fine-tune the process until each task falls into place. This project was my way of brewing together C++, OOP, and data structures into a working task scheduler.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj-card reveal">
+          <button class="flip-btn" aria-label="Flip card for behind-the-scenes note">↻</button>
+          <div class="card-inner">
+            <div class="card-face card-front">
+              <div class="proj-top"><span class="proj-num">No. 04</span><span class="proj-price">$0.00</span></div>
+              <h3>Checkers!</h3>
+              <p class="desc">A browser-based checkers game where players can move pieces, capture opponents, and play on an interactive game board.</p>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span><span class="tag">HTML5</span><span class="tag">CSS3</span>
+              </div>
+              <div class="proj-links">
+                <a href="https://lokshivgupta.github.io/Checkers/" target="_blank" rel="noopener">Live Demo →</a>
+                <a href="https://github.com/lokshivgupta/Checkers" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h4>Behind the scenes</h4>
+              <p>Built like setting up a coffee table for a game night — the board comes first, then the pieces, rules, and interactions all have to work together. This project brought together JavaScript, HTML, and CSS to turn a checkers board into a playable game.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="order">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Place Your Order</h2>
+        <p>Got a project, a job, or just want to talk about coffee gear? Fill out the ticket below.</p>
+      </div>
+
+      <div class="receipt-wrap reveal">
+        <form class="receipt" id="orderForm">
+          <div class="receipt-head">
+            <div class="cup-emoji">☕</div>
+            <h3>Order Ticket</h3>
+            <div class="sub" id="ticketNum">#—</div>
+          </div>
+          <hr class="receipt-divider">
+
+          <div class="field">
+            <label for="fname">Name</label>
+            <input id="fname" name="name" type="text" placeholder="Jamie Doe" required>
+          </div>
+          <div class="field">
+            <label for="femail">Email</label>
+            <input id="femail" name="email" type="email" placeholder="jamie@email.com" required>
+          </div>
+          <div class="field">
+            <label for="fmsg">Your Message / Order</label>
+            <textarea id="fmsg" name="message" placeholder="1x Collaboration, extra hot, no rush..." required></textarea>
+          </div>
+
+          <hr class="receipt-divider">
+          <div class="receipt-total"><span>1x Message</span><span>No Charge</span></div>
+          <div class="receipt-total"><span>Response Time</span><span>~24 hrs</span></div>
+          <div class="receipt-total grand"><span>Total</span><span>On the house</span></div>
+
+          <button type="submit" class="order-btn" id="orderBtn">Submit Order ☕</button>
+
+          <div class="receipt-barcode" aria-hidden="true"></div>
+          <div class="receipt-foot" id="ticketTime">Thank you for your order</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Lokshiv Gupta</h3>
+        <p>Building things, one cup at a time.</p>
+      </div>
+      <div class="clock-chip">
+        <span class="dot"></span>
+        <span id="liveClock">--:--:--</span>
+        <span class="mono">· Open 24/7 for coffee &amp; code</span>
+      </div>
+    </div>
+
+    <div class="footer-grid" style="margin-bottom:20px;">
+      <div class="social-row">
+        <a class="social-link" href="https://github.com/lokshivgupta" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.94c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.5 3.17-1.18 3.17-1.18.64 1.6.24 2.77.12 3.06.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.4-5.26 5.68.42.36.78 1.07.78 2.17v3.22c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/lokshivgupta/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+        </a>
+        <a class="social-link" href="mailto:guptalokshiv@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2.2.5 7.8 6.2L19.8 6H4.2ZM4 8.1V18h16V8.1l-8 6.4-8-6.4Z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Lokshiv Gupta. All rights reserved.</span>
+      <span class="mono">Brewed with HTML, CSS &amp; JS</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<canvas id="beanCanvas" aria-hidden="true"></canvas>
+
+<div class="toast" id="toast">
+  <span id="toastMsg">☕ Secret menu unlocked!</span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- mobile nav ---- */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function(){
+    var open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ navLinks.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); });
+  });
+
+  /* ---- scroll progress cup fill ---- */
+  var cupFill = document.getElementById('cupFill');
+  function updateCup(){
+    var doc = document.documentElement;
+    var scrollPct = (doc.scrollTop) / (doc.scrollHeight - doc.clientHeight || 1);
+    scrollPct = Math.max(0, Math.min(1, scrollPct));
+    var h = 24 * scrollPct;
+    cupFill.setAttribute('height', h);
+    cupFill.setAttribute('y', 28 - h);
+
+    var toTop = document.getElementById('toTop');
+    if(doc.scrollTop > 500){ toTop.classList.add('show'); } else { toTop.classList.remove('show'); }
+  }
+  document.addEventListener('scroll', updateCup, { passive:true });
+  updateCup();
+
+  document.getElementById('toTop').addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: 'smooth' });
+  });
+
+  /* ---- reveal on scroll ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in-view'); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- brew status selector ---- */
+  var moods = {
+    espresso: { icon:'⚡', title:'Espresso Mode', desc:'Shipping fast, no decaf allowed.' },
+    latte:    { icon:'🌿', title:'Latte Focus',   desc:'Smooth, steady, deep work hours.' },
+    coldbrew: { icon:'🧊', title:'Cold Brew Chill', desc:'Low-key debugging, no rush today.' },
+    decaf:    { icon:'😴', title:'Decaf Rest',    desc:'Recharging — back online soon.' }
+  };
+  var brewStatus = document.getElementById('brewStatus');
+  var brewIcon = document.getElementById('brewIcon');
+  var brewTitle = document.getElementById('brewTitle');
+  var brewDesc = document.getElementById('brewDesc');
+  var opts = document.querySelectorAll('.brew-opt');
+
+  opts.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      opts.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var m = moods[btn.getAttribute('data-mood')];
+      brewStatus.classList.add('swap');
+      setTimeout(function(){
+        brewIcon.textContent = m.icon;
+        brewTitle.textContent = m.title;
+        brewDesc.textContent = m.desc;
+        brewStatus.classList.remove('swap');
+      }, 180);
+    });
+  });
+
+  /* ---- project card tilt (front-facing cards only) ---- */
+  document.querySelectorAll('.proj-card').forEach(function(card){
+    card.addEventListener('mousemove', function(e){
+      if(card.classList.contains('flipped')) return;
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'perspective(700px) rotateX(' + (-y*7) + 'deg) rotateY(' + (x*7) + 'deg) translateY(-4px)';
+    });
+    card.addEventListener('mouseleave', function(){
+      card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+    });
+  });
+
+  /* ---- project card flip ---- */
+  document.querySelectorAll('.flip-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var card = btn.closest('.proj-card');
+      card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+      card.classList.toggle('flipped');
+    });
+  });
+
+  /* ---- typewriter on scroll into view ---- */
+  var twEl = document.getElementById('typewriterText');
+  if(twEl){
+    var fullText = twEl.getAttribute('data-full');
+    var twDone = false;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var twObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting && !twDone){
+          twDone = true;
+          if(reduceMotion){ twEl.textContent = fullText; twEl.classList.add('done'); return; }
+          var i = 0;
+          var t = setInterval(function(){
+            twEl.textContent = fullText.slice(0, i);
+            i++;
+            if(i > fullText.length){ clearInterval(t); twEl.classList.add('done'); }
+          }, 14);
+          twObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    twObserver.observe(twEl);
+  }
+
+  /* ---- toast helper ---- */
+  var toast = document.getElementById('toast');
+  var toastMsg = document.getElementById('toastMsg');
+  var toastTimer;
+  function showToast(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+  }
+
+  /* ---- secret menu easter egg: click logo 5x ---- */
+  var brand = document.querySelector('.brand');
+  var secretPill = document.getElementById('secretPill');
+  var brandClicks = 0, brandClickTimer;
+  var unlocked = false;
+  brand.addEventListener('click', function(e){
+    brandClicks++;
+    clearTimeout(brandClickTimer);
+    brandClickTimer = setTimeout(function(){ brandClicks = 0; }, 1200);
+    if(brandClicks >= 5 && !unlocked){
+      unlocked = true;
+      e.preventDefault();
+      secretPill.classList.add('unlocked');
+      showToast('☕ Secret menu unlocked — you found the good stuff');
+    }
+  });
+
+  /* ---- cups fueled counter ---- */
+  var fuelBtn = document.getElementById('fuelBtn');
+  var fuelCount = document.getElementById('fuelCount');
+  var cups = 0;
+  var fuelMessages = ['Nice.', 'Getting warmed up.', 'Okay, respect.', 'This is a lot of caffeine.', 'Legendary status.'];
+  fuelBtn.addEventListener('click', function(){
+    cups++;
+    fuelCount.textContent = cups;
+    var puff = document.createElement('span');
+    puff.className = 'fuel-puff';
+    puff.textContent = '☁️';
+    var r = fuelBtn.getBoundingClientRect();
+    puff.style.left = (r.left + r.width/2 - 8) + 'px';
+    puff.style.top = (r.top - 4) + 'px';
+    puff.style.position = 'fixed';
+    document.body.appendChild(puff);
+    setTimeout(function(){ puff.remove(); }, 900);
+    if(cups > 0 && cups % 5 === 0){
+      showToast('☕ ' + fuelMessages[Math.min(Math.floor(cups/5)-1, fuelMessages.length-1)]);
+    }
+  });
+
+  /* ---- magnetic buttons ---- */
+  if(window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+    document.querySelectorAll('.btn').forEach(function(btn){
+      btn.addEventListener('mousemove', function(e){
+        var r = btn.getBoundingClientRect();
+        var x = e.clientX - r.left - r.width/2;
+        var y = e.clientY - r.top - r.height/2;
+        btn.style.transform = 'translate(' + (x*0.18) + 'px,' + (y*0.35) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function(){
+        btn.style.transform = 'translate(0,0)';
+      });
+    });
+  }
+
+  /* ---- bean cursor trail (desktop, motion-friendly only) ---- */
+  (function(){
+    var canPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!canPointer || reduce) return;
+
+    var canvas = document.getElementById('beanCanvas');
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var lastSpawn = 0;
+    document.addEventListener('mousemove', function(e){
+      var now = Date.now();
+      if(now - lastSpawn < 40) return;
+      lastSpawn = now;
+      particles.push({
+        x: e.clientX, y: e.clientY,
+        vx: (Math.random()-0.5)*0.6, vy: Math.random()*0.6 + 0.3,
+        rot: Math.random()*Math.PI*2, vr: (Math.random()-0.5)*0.08,
+        life: 1, size: 5 + Math.random()*3
+      });
+      if(particles.length > 40) particles.shift();
+    }, { passive:true });
+
+    function drawBean(p){
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(p.life, 0);
+      ctx.fillStyle = '#4A362E';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.size, p.size*0.7, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.strokeStyle = '#FDFBF7';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, -p.size*0.6);
+      ctx.quadraticCurveTo(0, 0, 0, p.size*0.6);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function loop(){
+      ctx.clearRect(0,0,canvas.width, canvas.height);
+      for(var i = particles.length - 1; i >= 0; i--){
+        var p = particles[i];
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.018;
+        if(p.life <= 0){ particles.splice(i,1); continue; }
+        drawBean(p);
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  })();
+
+  /* ---- order form ---- */
+  var form = document.getElementById('orderForm');
+  var orderBtn = document.getElementById('orderBtn');
+  var ticketNum = document.getElementById('ticketNum');
+  var ticketTime = document.getElementById('ticketTime');
+  ticketNum.textContent = '#' + Math.floor(1000 + Math.random()*8999);
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('fname').value.trim();
+    var email = document.getElementById('femail').value.trim();
+    var msg = document.getElementById('fmsg').value.trim();
+    if(!name || !email || !msg) return;
+
+    orderBtn.textContent = 'Brewing...';
+    orderBtn.disabled = true;
+
+    setTimeout(function(){
+      orderBtn.textContent = 'Order Sent ✓';
+      orderBtn.classList.add('sent');
+      ticketTime.textContent = 'Ticket fired at ' + new Date().toLocaleTimeString();
+      spawnBeanConfetti();
+      showToast('☕ Order fired — talk soon, ' + name.split(' ')[0] + '!');
+
+      var mailto = 'mailto:guptalokshiv@gmail.com?subject=' + encodeURIComponent('New order from ' + name) +
+        '&body=' + encodeURIComponent(msg + '\n\nFrom: ' + name + ' (' + email + ')');
+      window.location.href = mailto;
+
+      setTimeout(function(){
+        orderBtn.textContent = 'Submit Order ☕';
+        orderBtn.classList.remove('sent');
+        orderBtn.disabled = false;
+        form.reset();
+        ticketNum.textContent = '#' + Math.floor(1000 + Math.random()*8999);
+      }, 2600);
+    }, 700);
+  });
+
+  /* ---- confetti beans on order success ---- */
+  function spawnBeanConfetti(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce) return;
+    for(var i = 0; i < 18; i++){
+      (function(){
+        var b = document.createElement('span');
+        b.className = 'bean-confetti';
+        b.textContent = Math.random() > 0.5 ? '☕' : '🫘';
+        var startX = Math.random() * window.innerWidth;
+        b.style.left = startX + 'px';
+        var duration = 1.6 + Math.random()*1.2;
+        b.style.animationDuration = duration + 's';
+        document.body.appendChild(b);
+        setTimeout(function(){ b.remove(); }, duration*1000 + 100);
+      })();
+    }
+  }
+
+  /* ---- live clock ---- */
+  var clockEl = document.getElementById('liveClock');
+  function tick(){
+    var d = new Date();
+    var hh = String(d.getHours()).padStart(2,'0');
+    var mm = String(d.getMinutes()).padStart(2,'0');
+    var ss = String(d.getSeconds()).padStart(2,'0');
+    clockEl.textContent = hh + ':' + mm + ':' + ss;
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
